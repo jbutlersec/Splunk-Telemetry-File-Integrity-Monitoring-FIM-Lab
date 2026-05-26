@@ -35,8 +35,10 @@ To prime the Windows kernel subsystem to record local object access, Advanced Au
 ```powershell
 gpupdate /force
 auditpol /get /category:"Object Access"
+```
+---
 
-## Step 3.2: Establish System Access Control Lists (SACLs)
+### Step 3.2: Establish System Access Control Lists (SACLs)
 Activating the kernel engine is a global primer; individual folder target paths must be tagged to generate logs. The following automated PowerShell script was executed to recursively bind auditing rules to the central organizational data repository:
 
 ```powershell
@@ -61,7 +63,7 @@ $AuditRule = New-Object System.Security.AccessControl.FileSystemAuditRule(`
 $Acl.AddAuditRule($AuditRule)
 Set-Acl -Path $PathToAudit -AclObject $Acl
 Write-Host "[SUCCESS] SACL successfully bound to $PathToAudit." -ForegroundColor Green
-
+```
 ---
 
 ### Step 3.3: Configure the Forwarder Log Pipeline
@@ -82,7 +84,7 @@ sourcetype = WinEventLog:Security
 
 # Commit the configuration changes and restart the endpoint agent daemon via PowerShell:
 Restart-Service -Name SplunkForwarder
-
+```
 ---
 
 ## 4. SIEM Verification & Event Logging Procedure
@@ -106,6 +108,8 @@ index=main EventCode=4663 "CompanyData"
 | search NOT User_Name="*$" AND NOT User_Name="SYSTEM"
 | table _time, User_Name, Object_Name, Process_Name, Accesses
 | rename _time as "Timestamp", User_Name as "User Account", Object_Name as "Target File", Process_Name as "Application Used", Accesses as "Action"
+```
+---
 
 3. Adjust the time-frame dropdown menu (located to the right of the search bar) from the default Last 24 Hours to Presets > Real-time > All time (real-time) or a strict historical window matching your file-touch execution.
 4. Click the search magnifying glass icon to run the query pipeline.
