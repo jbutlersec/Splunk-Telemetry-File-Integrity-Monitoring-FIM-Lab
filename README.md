@@ -36,9 +36,7 @@ To prime the Windows kernel subsystem to record local object access, Advanced Au
 gpupdate /force
 auditpol /get /category:"Object Access"
 
----
-
-### Step 3.2: Establish System Access Control Lists (SACLs)
+## Step 3.2: Establish System Access Control Lists (SACLs)
 Activating the kernel engine is a global primer; individual folder target paths must be tagged to generate logs. The following automated PowerShell script was executed to recursively bind auditing rules to the central organizational data repository:
 
 ```powershell
