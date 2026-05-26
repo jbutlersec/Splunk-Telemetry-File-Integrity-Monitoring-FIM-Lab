@@ -36,6 +36,8 @@ To prime the Windows kernel subsystem to record local object access, Advanced Au
 gpupdate /force
 auditpol /get /category:"Object Access"
 
+---
+
 ### Step 3.2: Establish System Access Control Lists (SACLs)
 Activating the kernel engine is a global primer; individual folder target paths must be tagged to generate logs. The following automated PowerShell script was executed to recursively bind auditing rules to the central organizational data repository:
 
@@ -61,6 +63,8 @@ $AuditRule = New-Object System.Security.AccessControl.FileSystemAuditRule(`
 $Acl.AddAuditRule($AuditRule)
 Set-Acl -Path $PathToAudit -AclObject $Acl
 Write-Host "[SUCCESS] SACL successfully bound to $PathToAudit." -ForegroundColor Green
+
+---
 
 ### Step 3.3: Configure the Forwarder Log Pipeline
 To direct data to the SIEM, the host-level Universal Forwarder collection configuration file was adjusted to capture the security log stream.
